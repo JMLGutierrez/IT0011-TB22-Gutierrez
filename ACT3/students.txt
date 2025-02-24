@@ -1,0 +1,12 @@
+
+Last Name: Gutierrez
+First Name: Justin
+Age: 22
+Contact Number: 0922113344
+Course: BSIT-AGD
+
+Last Name: Doe
+First Name: John
+Age: 20
+Contact Number: 091223334444
+Course: BSIT-AGD
