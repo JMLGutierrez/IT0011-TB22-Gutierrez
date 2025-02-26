@@ -1,0 +1,194 @@
+#no exception handling for file not found immediate exit will occur
+#Create a record management program given a list of students records. Each record must be a tuple consist of the following:
+#
+#Student ID: This must be a six digit number
+#Student Name: Consist of first name and last name (you may set the fullname as tuple)
+#Student Class Standing: The student class standing grade
+#Major Exam Grade: Exam grade of the student
+
+SIDl = []
+Fnamel = []
+Lnamel = []
+Sclassl = []
+Majl = []
+
+choice = int
+filename = ""
+
+while choice != 9:
+    print("STUDENT DATABASE MANAGEMENT SYSTEM")
+    print("--------------Menu----------------")
+    print("[1]----------------------Open File")
+    print("[2]----------------------Save File")
+    print("[3]-------------------Save as File")
+    print("[4]-------Show all Student Records")
+    print("[5]------------Show Student Record")
+    print("[6]---------------------Add Record")
+    print("[7]--------------------Edit Record")
+    print("[8]------------------Delete Record")
+    print("[9]---------------------------Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        print("--------------------------------")
+        filename = input("Enter the name of the file to open: ")
+
+        if filename == "":
+            print("No file name entered")
+        else:
+            f = open(filename + ".txt", "r")
+            print("File opened...\n")
+            SIDl.clear()
+            Fnamel.clear()
+            Lnamel.clear()
+            Sclassl.clear()
+            Majl.clear()
+            for line in f:
+                data = line.strip().split(" ")
+                if len(data) == 5:
+                    SIDl.append(data[0])
+                    Fnamel.append(data[1])
+                    Lnamel.append(data[2])
+                    Sclassl.append(data[3])
+                    Majl.append(data[4])
+
+    elif choice == 2:
+        print("--------------------------------")
+        if filename == "":
+            print("No file open\n")
+        else:
+            print("Saving File...")
+            with open(filename + ".txt", "a") as f:
+                for i in range(len(SIDl)):
+                    f.writelines(SIDl[i] + " " + Fnamel[i] + " " + Lnamel[i] + " " + Sclassl[i] + " " + Majl[i] + "\n")
+            print("File saved...\n")
+
+    elif choice == 3:
+        print("--------------------------------")
+        print("Enter name of new record: ")
+        filename = input()
+        with open(filename + ".txt", "w") as f:
+            for i in range(len(SIDl)):
+                f.writelines(SIDl[i] + " " + Fnamel[i] + " " + Lnamel[i] + " " + Sclassl[i] + " " + Majl[i] + "\n")
+
+    elif choice == 4:
+        print("--------------------------------")
+        print("\nStudent Records:")
+        if len(SIDl) == 0:
+            print("NO RECORDS FOUND!\n")
+        else:
+            for i in range(len(SIDl)):
+                print(f"\nStudent {i + 1}:")
+                print(f"ID: {SIDl[i]}")
+                print(f"Full Name: {Lnamel[i]}, {Fnamel[i]}")
+                print(f"Class Standing: {Sclassl[i]}")
+                print(f"Major Exam Grade: {Majl[i]}")
+
+    elif choice == 5:
+        print("--------------------------------")
+        print("\nStudent Records Menu:")
+        print("[1]-----------------By Last Name")
+        print("[2]--------------------By Grades")
+
+        shoice = int(input("Enter your choice: "))
+
+        if len(SIDl) == 0:
+            print("NO RECORDS FOUND!\n")
+
+        elif shoice == 1:
+            for i in range(len(Lnamel) - 1):
+                for j in range(i + 1, len(Lnamel)):
+                    if Lnamel[i] > Lnamel[j]:
+                        Lnamel[i], Lnamel[j] = Lnamel[j], Lnamel[i]
+                        Fnamel[i], Fnamel[j] = Fnamel[j], Fnamel[i]
+                        SIDl[i], SIDl[j] = SIDl[j], SIDl[i]
+                        Sclassl[i], Sclassl[j] = Sclassl[j], Sclassl[i]
+                        Majl[i], Majl[j] = Majl[j], Majl[i]
+
+            for i in range(len(Lnamel)):
+                print(f"\nStudent {i + 1}:")
+                print(f"ID: {SIDl[i]}")
+                print(f"Full Name: {Lnamel[i]}, {Fnamel[i]}")
+                print(f"Class Standing: {Sclassl[i]}")
+                print(f"Major Exam Grade: {Majl[i]}")
+                final_grade = (0.6 * float(Sclassl[i])) + (0.4 * float(Majl[i]))
+                print(f"Final Grade: {final_grade:.2f}")
+
+        elif shoice == 2:
+            final_grades = []
+            for i in range(len(SIDl)):
+                final_grade = (0.6 * float(Sclassl[i])) + (0.4 * float(Majl[i]))
+                final_grades.append((final_grade, i))
+
+            for i in range(len(final_grades) - 1):
+                for j in range(i + 1, len(final_grades)):
+                    if final_grades[i][0] < final_grades[j][0]:
+                        final_grades[i], final_grades[j] = final_grades[j], final_grades[i]
+
+            for index, (grade, i) in enumerate(final_grades):
+                print(f"\nStudent {index + 1}:")
+                print(f"ID: {SIDl[i]}")
+                print(f"Full Name: {Lnamel[i]}, {Fnamel[i]}")
+                print(f"Class Standing: {Sclassl[i]}")
+                print(f"Major Exam Grade: {Majl[i]}")
+                print(f"Final Grade: {grade:.2f}")
+
+        else:
+            print("Invalid choice!")
+
+    elif choice == 6:
+        choice2 = 'yes'
+        while choice2.lower() == 'yes':
+            print("--------------------------------")
+            print("\nAdding Records:")
+            s_id = input("Enter a Student ID: ")
+            s_first_name = input("Enter Student First Name: ")
+            s_last_name = input("Enter Student Last Name: ")
+            s_classSt = input("Student Class Standing: ")
+            s_major = input("Major Exam Grade: ")
+
+            SIDl.append(s_id)
+            Fnamel.append(s_first_name)
+            Lnamel.append(s_last_name)
+            Sclassl.append(s_classSt)
+            Majl.append(s_major)
+
+            choice2 = input("Do you want to enter another student? (yes/no): ")
+
+    elif choice == 7:
+        print("--------------------------------")
+        print("\nEditing Record:")
+        choice2 = 'yes'
+        while choice2.lower() == 'yes':
+            key = input("Enter Student ID to be changed: ")
+            for i in range(len(SIDl)):
+                if SIDl[i] == key:
+                    SIDl[i] = input("Enter a Student ID: ")
+                    Fnamel[i] = input("Enter Student First Name: ")
+                    Lnamel[i] = input("Enter Student Last Name: ")
+                    Sclassl[i] = input("Student Class Standing: ")
+                    Majl[i] = input("Major Exam Grade: ")
+            choice2 = input("Do you want to edit more? (yes/no): ")
+
+    elif choice == 8:
+        print("--------------------------------")
+        print("\nDeleting Record:")
+        choice2 = 'yes'
+        while choice2.lower() == 'yes':
+            key = input("Enter Student ID to delete record: ")
+            for i in range(len(SIDl)):
+                if SIDl[i] == key:
+                    del SIDl[i]
+                    del Fnamel[i]
+                    del Lnamel[i]
+                    del Sclassl[i]
+                    del Majl[i]
+                    break
+            choice2 = input("Do you want to delete more? (yes/no): ")
+
+    elif choice == 9:
+        print("Exit.....BYEEEEE")
+
+    else:
+        print("Invalid Choice")
